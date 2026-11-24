@@ -1,0 +1,149 @@
+147 generic snap-point clusters to label
+  [1/147]  692x Parking Area    -> Parking Area — Regent Arcade, Plaistow
+  [2/147]  512x Hospital        -> Hospital — Wellbrook Road, Locksbottom
+  [3/147]  480x Shopping Area   -> Shopping Area — Dryden Way, Goddington
+  [4/147]  408x Shopping Area   -> Shopping Area — Lagoon Road, Poverest
+  [5/147]  321x Supermarket     -> Supermarket — Carlton Parade, Ramsden
+  [6/147]  320x Supermarket     -> Supermarket — Copers Cope Road, New Beckenham
+  [7/147]  292x Parking Area    -> Parking Area — Pallant Way, Locksbottom
+  [8/147]  284x Shopping Area   -> Shopping Area — Elmfield Park, Plaistow
+  [9/147]  270x Shopping Area   -> Shopping Area — Meadow View, St Paul's Cray
+  [10/147]  264x Parking Area    -> Parking Area — Churchill Way, Plaistow
+  [11/147]  255x Supermarket     -> Supermarket — Augustus Lane, Goddington
+  [12/147]  254x Shopping Area   -> Shopping Area — High Street, Plaistow
+  [13/147]  218x Petrol Station  -> Petrol Station — Winlaton Road, Southend
+  [14/147]  213x Petrol Station  -> Petrol Station — Widmore Road, Widmore
+  [15/147]  198x Supermarket     -> Supermarket — Randlesdown Road, Southend
+  [16/147]  189x Supermarket     -> Supermarket — Walnuts Shopping Centre, Goddington
+  [17/147]  165x Supermarket     -> Supermarket — Crescent Way, Green Street Green
+  [18/147]  162x Shopping Area   -> Shopping Area — Market Meadow, Poverest
+  [19/147]  156x Parking Area    -> Parking Area — Walnuts Shopping Centre, Goddington
+  [20/147]  150x Parking Area    -> Parking Area — Gravel Pit Way, Goddington
+  [21/147]  147x Shopping Area   -> Shopping Area — Station Road, St Paul's Cray
+  [22/147]  143x Supermarket     -> Supermarket — Cotmandene Crescent, St Paul's Cray
+  [23/147]  132x Supermarket     -> Supermarket — Walters Yard, Plaistow
+  [24/147]  130x Parking Area    -> Parking Area — Elmfield Park, Plaistow
+  [25/147]  126x Parking Area    -> Parking Area — Burton's Yard, Beckenham
+  [26/147]  126x Supermarket     -> Supermarket — Dittisham Road, Elmstead
+  [27/147]  120x Parking Area    -> Parking Area — The Crescent, Beckenham
+  [28/147]  117x Petrol Station  -> Petrol Station — High Street, Ramsden
+  [29/147]  105x Parking Area    -> Parking Area — Queensway, Poverest
+  [30/147]  102x Supermarket     -> Supermarket — High Street, Chislehurst
+  [31/147]  100x Shopping Area   -> Shopping Area — Ravensbourne Road, Plaistow
+  [32/147]   99x Supermarket     -> Supermarket — High Street, Green Street Green
+  [33/147]   98x Petrol Station  -> Petrol Station — Baring Road, Chinbrook
+  [34/147]   96x Supermarket     -> Supermarket — Burnhill Road, Beckenham
+  [35/147]   88x Parking Area    -> BMX track, Southend
+  [36/147]   88x Supermarket     -> Supermarket — High Street, Penge
+  [37/147]   87x Supermarket     -> Supermarket — Green Lane, Chislehurst
+  [38/147]   87x Petrol Station  -> Petrol Station — B226, Mottingham
+  [39/147]   81x Parking Area    -> Parking Area — Crofton Road, Crofton
+  [40/147]   74x Supermarket     -> Supermarket — Tetty Way, Plaistow
+  [41/147]   72x Petrol Station  -> Petrol Station — Charterhouse Road, Goddington
+  [42/147]   68x Hospital        -> Hospital — Frognal Avenue, Longlands
+  [43/147]   66x Parking Area    -> Parking Area — Ella Close, Beckenham
+  [44/147]   64x Supermarket     -> Supermarket — Long Lane, Elmers End
+  [45/147]   64x Supermarket     -> Supermarket — Crofton Road, Locksbottom
+  [46/147]   64x Supermarket     -> Supermarket — Bromley Road, Southend
+  [47/147]   62x Supermarket     -> Supermarket — Maroons Way, Southend
+  [48/147]   60x Supermarket     -> Supermarket — Downham Way, Downham
+  [49/147]   60x Supermarket     -> Supermarket — Farwig Lane, Plaistow
+  [50/147]   58x Parking Area    -> Parking Area — St Georges Road, Beckenham
+  [51/147]   57x Supermarket     -> Supermarket — Addison Road, Widmore
+  [52/147]   54x Parking Area    -> Parking Area — Cow Path, Elmstead
+  [53/147]   51x Parking Area    -> Parking Area — Homefield Rise, Goddington
+  [54/147]   51x Supermarket     -> Supermarket — Station Road, Blackfen
+  [55/147]   50x Supermarket     -> Supermarket — Burnt Ash Lane, Sundridge
+  [56/147]   50x Parking Area    -> Parking Area — Crown Lane, Southborough
+  [57/147]   49x Supermarket     -> Supermarket — Elmers End Road, Anerley
+  [58/147]   48x Parking Area    -> Parking Area — Petts Wood Road, Poverest
+  [59/147]   45x Petrol Station  -> Petrol Station — Bloomfield Road, Widmore
+  [60/147]   45x Petrol Station  -> Petrol Station — Sevenoaks Way, St Paul's Cray
+  [61/147]   42x Petrol Station  -> Petrol Station — Westmoreland Road, Park Langley
+  [62/147]   42x Supermarket     -> Supermarket — Godwin Road, Widmore
+  [63/147]   42x Supermarket     -> Supermarket — Jenner Close, Longlands
+  [64/147]   40x Petrol Station  -> Petrol Station — Station Approach, Hayes
+  [65/147]   40x Parking Area    -> Parking Area — Church Hill, Goddington
+  [66/147]   38x Supermarket     -> Supermarket — Bourdon Road, Anerley
+  [67/147]   37x Parking Area    -> Parking Area — Evelina Road, Penge
+  [68/147]   36x Hospital        -> Hospital — Croydon Road, Elmers End
+  [69/147]   34x Parking Area    -> Parking Area — Turners Meadow Way, New Beckenham
+  [70/147]   34x Shopping Area   -> Shopping Area — Empire Square, Penge
+  [71/147]   33x Parking Area    -> Parking Area — St. Mark's Road, Widmore
+  [72/147]   33x Petrol Station  -> Petrol Station — Queensway, Poverest
+  [73/147]   31x Supermarket     -> Sidcup By-pass, St Paul's Cray
+  [74/147]   30x Parking Area    -> Parking Area — Pavilion Lane, New Beckenham
+  [75/147]   30x Petrol Station  -> Croydon Road, Keston Mark
+  [76/147]   29x Petrol Station  -> Petrol Station — Whitefoot Terrace, Downham
+  [77/147]   28x Parking Area    -> Parking Area — Naval Walk, Plaistow
+  [78/147]   28x Petrol Station  -> Sidcup Road, New Eltham
+  [79/147]   27x Parking Area    -> Parking Area — Woodlands Road, Bickley
+  [80/147]   27x Parking Area    -> Church Path, Chislehurst
+  [81/147]   26x Parking Area    -> Parking Area — Jenner Close, Longlands
+  [82/147]   25x Parking Area    -> Parking Area — Shrubsall Close, Middle Park
+  [83/147]   24x Parking Area    -> Parking Area — Brindley Way, Sundridge
+  [84/147]   24x Supermarket     -> Supermarket — Upper Elmers End Road, Upper Elmers End
+  [85/147]   24x Parking Area    -> Parking Area — , Blackfen
+  [86/147]   23x Petrol Station  -> Petrol Station — Main Road, Longlands
+  [87/147]   21x Parking Area    -> Parking Area — Station Approach, Elmstead
+  [88/147]   21x Supermarket     -> Supermarket — Foots Cray High Street, North Cray
+  [89/147]   19x Supermarket     -> Supermarket — High Street, Penge
+  [90/147]   19x Parking Area    -> Parking Area — Hawes Lane, Coney Hall
+  [91/147]   19x Parking Area    -> Parking Area — Chipperfield Road, St Paul's Cray
+  [92/147]   18x Petrol Station  -> Petrol Station — Bromley Hill, Downham
+  [93/147]   18x Petrol Station  -> Petrol Station — Meadside Close, Penge
+  [94/147]   18x Petrol Station  -> Petrol Station — High Street, Green Street Green
+  [95/147]   18x Parking Area    -> Parking Area — Goddington Lane, Goddington
+  [96/147]   18x Petrol Station  -> Petrol Station — Cotmandene Crescent, St Paul's Cray
+  [97/147]   17x Petrol Station  -> Petrol Station — Birchwood Road, St Mary Cray
+  [98/147]   16x Petrol Station  -> Petrol Station — Cherry Orchard Road, Bromley Common
+  [99/147]   15x Parking Area    -> Parking Area — Station Approach, Bickley
+  [100/147]   15x Petrol Station  -> Petrol Station — Franklin Road, Penge
+  [101/147]   15x Parking Area    -> Parking Area — Warren Road, Goddington
+  [102/147]   15x Shopping Area   -> Shopping Area — Oasthouse Way, Poverest
+  [103/147]   15x Petrol Station  -> Petrol Station — Crescent Gardens, Swanley
+  [104/147]   14x Parking Area    -> Parking Area — Tootswood Road, Park Langley
+  [105/147]   12x Parking Area    -> Parking Area — St. Jame's Court, Plaistow
+  [106/147]   12x Parking Area    -> Parking Area — Fair Acres, Hayes
+  [107/147]   12x Parking Area    -> Parking Area — Gosshill Road, Bickley
+  [108/147]   11x Parking Area    -> Parking Area — Dunbar Avenue, Elmers End
+  [109/147]   10x Parking Area    -> Parking Area — Wharton Road, Plaistow
+  [110/147]   10x Petrol Station  -> Petrol Station — Bromley Road, Shortlands
+  [111/147]   10x Shopping Area   -> Shopping Area — Bell Green Lane, Perry Vale
+  [112/147]   10x Parking Area    -> Parking Area — Westgate Road, Woodside
+  [113/147]    9x Parking Area    -> Parking Area — Hook Farm Road, Southborough
+  [114/147]    9x Parking Area    -> Parking Area — Kingsley Mews, Chislehurst
+  [115/147]    9x Parking Area    -> Parking Area — Station Approach, Goddington
+  [116/147]    9x Hospital        -> Hospital — Cardinham Road, Green Street Green
+  [117/147]    9x Parking Area    -> Parking Area — Park Road, Poverest
+  [118/147]    9x Parking Area    -> Parking Area — Lagoon Road, Poverest
+  [119/147]    9x Petrol Station  -> Sidcup Road, Coldharbour
+  [120/147]    8x Parking Area    -> Parking Area — Station Road, Plaistow
+  [121/147]    8x Parking Area    -> Parking Area — St. Margaret's Road, Elmers End
+  [122/147]    8x Parking Area    -> Parking Area — Palace Grove, Plaistow
+  [123/147]    8x Petrol Station  -> Petrol Station — Links Way, Eden Park
+  [124/147]    8x Hospital        -> Hospital — Albemarle Road, Shortlands
+  [125/147]    8x Petrol Station  -> Sidcup By-pass, Swanley
+  [126/147]    8x Parking Area    -> Parking Area — Jubilee Way, Blackfen
+  [127/147]    7x Parking Area    -> Parking Area — Station Approach, Blackfen
+  [128/147]    6x Parking Area    -> Parking Area — , Plaistow
+  [129/147]    6x Supermarket     -> Supermarket — Radnor Walk, London Borough of Croydon
+  [130/147]    6x Petrol Station  -> Petrol Station — Sevenoaks Road, Green Street Green
+  [131/147]    6x Shopping Area   -> Shopping Area — Murray Road, St Paul's Cray
+  [132/147]    6x Parking Area    -> Parking Area — Sharman Court, Longlands
+  [133/147]    5x Petrol Station  -> Petrol Station — , Green Street Green
+  [134/147]    5x Hospital        -> Hospital — Frognal Place, Longlands
+  [135/147]    4x Parking Area    -> Parking Area — Plawsfield Road, Penge
+  [136/147]    4x Parking Area    -> Parking Area — Parkgate Road, Crockenhill
+  [137/147]    4x Petrol Station  -> Petrol Station — Edgington Way, St Paul's Cray
+  [138/147]    4x Petrol Station  -> Sidcup Road, Coldharbour
+  [139/147]    3x Parking Area    -> Parking Area — York Rise, Crofton
+  [140/147]    3x Parking Area    -> Parking Area — Porthallow Close, Green Street Green
+  [141/147]    2x Parking Area    -> Parking Area — Hayes Lane, Hayes
+  [142/147]    2x Petrol Station  -> Petrol Station — Croydon Road, Elmers End
+  [143/147]    2x Parking Area    -> Parking Area — St Paul's Wood Hill, St Paul's Cray
+  [144/147]    2x Parking Area    -> Parking Area — Old Perry Street, Chislehurst
+  [145/147]    1x Parking Area    -> Parking Area — Long Meadow Close, West Wickham
+  [146/147]    1x Parking Area    -> Parking Area — Ringwood Avenue, Green Street Green
+  [147/147]    1x Parking Area    -> Parking Area — Blanmerle Road, New Eltham
+Wrote /root/crimescope/data/landmark_labels.json (147 labels)

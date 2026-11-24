@@ -133,7 +133,19 @@ footer a{color:var(--accent);text-decoration:none}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 let SNAPSHOT = null;
+let LANDMARKS = null;         // coord-key -> {label,...} from nominatim reverse geocode
 let SNAPSHOTS = {};           // label -> snapshot json (multi-area switcher)
+
+function landmarkLabel(lat, lng){
+  if(!LANDMARKS) return null;
+  let best=null, bd=1e9;
+  for(const key in LANDMARKS){
+    const [kla,kln] = key.split(',').map(Number);
+    const d = Math.hypot((kla-lat)*111.32, (kln-lng)*69.5*Math.cos(lat*Math.PI/180));
+    if(d<bd){bd=d;best=LANDMARKS[key];}
+  }
+  return bd<=0.35 ? best.label : null;   // within ~350 m of a geocoded cluster
+}
 
 const JUSTICE = ["charged","court result","sentenced","caution","conditional caution","penalty notice","disorder","final warning","death of offender","offender unfit","binding off","fixed penalty","penalty notice for"];
 function classify(o){
@@ -156,6 +168,7 @@ let map, layer;
 
 async function boot(){
   const st = document.getElementById('status');
+  try{ LANDMARKS = await (await fetch('data/landmark_labels.json?t=' + Date.now())).json().catch(()=>null); }catch(e){}
   let areas = [];
   try{
     const res = await fetch('data/areas.json?t=' + Date.now());
@@ -256,9 +269,16 @@ function render(){
       return `<tr><td>${m}</td><td>${o.closed}</td><td>${o.justice}</td><td><b>${pct(o.justice,o.closed)}</b></td></tr>`}).join('') +
     "</table><div class='filter-note'>* faced-justice share of cases with a recorded outcome</div>";
 
-  // streets
+  // streets — generic landmarks resolved to geocoded "X — road, suburb" labels
   const cnt={};
-  for(const c of recs){ const s=c.street||"unknown"; (cnt[s] ||= {n:0,d:99}); cnt[s].n++; cnt[s].d=Math.min(cnt[s].d,c.d); }
+  for(const c of recs){
+    let s=c.street||"unknown";
+    if(/On or near (Supermarket|Parking Area|Petrol Station|Shopping Area|Restaurant\/Cafe|Bank|Public House|Hotel|Leisure Centre|Hospital|University\/College|Bus or train station|Park|Retail Park|Speed Camera|Bike Shop)$/.test(s)){
+      const ll=landmarkLabel(c.lat,c.lng);
+      if(ll) s=ll;
+    }
+    (cnt[s] ||= {n:0,d:99}); cnt[s].n++; cnt[s].d=Math.min(cnt[s].d,c.d);
+  }
   const top=Object.entries(cnt).sort((a,b)=>b[1].n-a[1].n).slice(0,14);
   document.getElementById('streets').innerHTML =
     "<tr><th>Street (anonymised)</th><th>Reports</th><th>Nearest</th></tr>" +
@@ -278,8 +298,10 @@ function render(){
   let n=0;
   for(const c of recs.filter(x=>last3.includes(x.month) && x.d<=rad)){
     n++;
+    const ll=landmarkLabel(c.lat,c.lng);
+    const disp=(ll && /On or near (Supermarket|Parking Area|Petrol Station|Shopping Area|Restaurant\/Cafe|Bank|Public House|Hotel|Leisure Centre|Hospital|University\/College|Bus or train station|Park|Retail Park|Speed Camera|Bike Shop)$/.test(c.street)) ? ll : c.street;
     L.circleMarker([c.lat,c.lng],{radius:7,color:COLORS[classify(c.out)],weight:1.5,fillOpacity:.45})
-      .bindPopup(`<b>${(c.street||'').replace(/^On or near /,'')}</b><br>${c.cat.replace(/-/g,' ')} · ${c.month} · ${c.d} km<br>${c.out ? 'Outcome: '+c.out : 'Outcome not yet recorded'}`)
+      .bindPopup(`<b>${(disp||'').replace(/^On or near /,'')}</b><br>${c.cat.replace(/-/g,' ')} · ${c.month} · ${c.d} km<br>${c.out ? 'Outcome: '+c.out : 'Outcome not yet recorded'}`)
       .addTo(layer);
   }
   if(n) map.fitBounds(layer.getBounds().pad(0.15)); else map.setView(SNAPSHOT.center,12);
