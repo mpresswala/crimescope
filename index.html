@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrimeScope — burglary &amp; crime outcomes around Orpington</title>
+<meta name="description" content="Street-level police recorded crime and outcome (solve) statistics for Orpington, Bromley and surrounds, from data.police.uk open data.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+  --bg:#0b0f14; --panel:#121923; --panel2:#0e141d; --line:#1e2a3a;
+  --text:#e6edf3; --muted:#8b98a9; --accent:#4fc3f7; --danger:#ff6b6b; --ok:#51cf66; --warn:#ffd43b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+header{padding:20px 28px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+header h1{font-size:20px;font-weight:700;letter-spacing:.3px}
+header h1 span{color:var(--accent)}
+header .sub{color:var(--muted);font-size:13px}
+header .sub a{color:var(--accent);text-decoration:none}
+main{max-width:1280px;margin:0 auto;padding:22px 28px 60px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+select,input[type=text]{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:14px;min-width:140px}
+button{background:var(--accent);color:#04212e;border:0;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+.status{color:var(--muted);font-size:13px;margin:0 0 14px;min-height:18px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .v{font-size:26px;font-weight:800}
+.kpi .l{font-size:12px;color:var(--muted)}
+.kpi.bad .v{color:var(--danger)} .kpi.warn .v{color:var(--warn)} .kpi.good .v{color:var(--ok)}
+.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
+#map{height:440px;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.months{display:flex;align-items:flex-end;gap:6px;height:130px;margin-top:6px}
+.mcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.mbar{width:100%;border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.mval{font-size:10px;color:var(--muted)}
+.mlab{font-size:10px;color:var(--muted);white-space:nowrap}
+.donut-wrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dleg{font-size:13px}
+.dleg div{margin:4px 0}
+.filter-note{font-size:12px;color:var(--muted);margin-bottom:8px}
+.chipbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);cursor:pointer}
+.chip.on{border-color:var(--accent);color:var(--accent)}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--muted);font-size:12px}
+footer a{color:var(--accent);text-decoration:none}
+@media(max-width:960px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Crime<span>Scope</span></h1>
+  <div class="sub">Police recorded crime &amp; investigative outcomes around Orpington · live data from <a href="https://data.police.uk" target="_blank">data.police.uk</a> (Metropolitan Police) · locations anonymised to nearest street · ~2-month publication lag</div>
+</header>
+
+<main>
+  <div class="controls">
+    <div class="field"><label>Area</label>
+      <select id="area"></select>
+    </div>
+    <div class="field"><label>Crime category</label>
+      <select id="category">
+        <option value="burglary" selected>Burglary</option>
+        <option value="all-crime">All crime</option>
+        <option value="violent-crime">Violence &amp; sexual offences</option>
+        <option value="vehicle-crime">Vehicle crime</option>
+        <option value="robbery">Robbery</option>
+        <option value="theft-from-the-person">Theft from the person</option>
+        <option value="criminal-damage-arson">Criminal damage &amp; arson</option>
+        <option value="shoplifting">Shoplifting</option>
+        <option value="drugs">Drugs</option>
+        <option value="anti-social-behaviour">Anti-social behaviour</option>
+        <option value="bicycle-theft">Bicycle theft</option>
+        <option value="other-theft">Other theft</option>
+        <option value="public-order">Public order</option>
+        <option value="possession-of-weapons">Possession of weapons</option>
+        <option value="other-crime">Other crime</option>
+      </select>
+    </div>
+    <div class="field"><label>Period</label>
+      <select id="months"><option value="3">Last 3 months</option><option value="6">Last 6 months</option><option value="12" selected>Last 12 months</option><option value="0">All available</option></select>
+    </div>
+    <div class="field"><label>Max distance from Orpington centre</label>
+      <select id="radius"><option value="1.5">1.5 km</option><option value="3" selected>3 km</option><option value="5">5 km</option></select>
+    </div>
+  </div>
+
+  <div class="status" id="status">Loading snapshot…</div>
+
+  <div class="kpis" id="kpis" hidden>
+    <div class="kpi"><div class="v" id="k-total">–</div><div class="l" id="k-total-l">reports</div></div>
+    <div class="kpi bad"><div class="v" id="k-nosuspect">–</div><div class="l">closed, no suspect</div></div>
+    <div class="kpi warn"><div class="v" id="k-ident">–</div><div class="l">suspect identified</div></div>
+    <div class="kpi good"><div class="v" id="k-solved">–</div><div class="l">faced justice</div></div>
+  </div>
+
+  <div class="grid">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card"><h2>Map · last 3 months</h2><div id="map"></div>
+        <div class="legend" id="maplegend"></div></div>
+      <div class="card"><h2>Hotspot streets · selected period</h2><table id="streets"></table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card"><h2>Reports per month</h2><div class="months" id="monthly"></div></div>
+      <div class="card"><h2>Investigative outcomes · selected period</h2>
+        <div class="donut-wrap">
+          <svg id="donut" width="150" height="150" viewBox="0 0 42 42"></svg>
+          <div class="dleg" id="donutleg"></div>
+        </div></div>
+      <div class="card"><h2>Solve rate by month (closed cases)</h2><div id="solveby"></div></div>
+    </div>
+  </div>
+</main>
+<footer>
+  Data: Metropolitan Police street-level open data, <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank">OGL v3</a>.
+  Snapshot generated <b id="gen">–</b>. Refreshed monthly (the API rate-limits live browser scans, so data is pre-fetched).
+  Outcome buckets: <em>faced justice</em> = charge/court result/caution/penalty; <em>suspect identified</em> adds "unable to prosecute"; <em>closed, no suspect</em> = investigation complete with no suspect (and similar no-action closures); <em>open</em> = still under investigation or outcome not yet published.
+  These are police <strong>reports</strong>, not convictions — most recorded crime never reaches court.
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let SNAPSHOT = null;
+let SNAPSHOTS = {};           // label -> snapshot json (multi-area switcher)
+
+const JUSTICE = ["charged","court result","sentenced","caution","conditional caution","penalty notice","disorder","final warning","death of offender","offender unfit","binding off","fixed penalty","penalty notice for"];
+function classify(o){
+  if (!o) return "open";
+  const s = o.toLowerCase();
+  if (s.includes("under investigation") || s.includes("status update unavailable")) return "open";
+  if (s.includes("no suspect identified") || s.includes("not enough information") ||
+      s.includes("victim does not support") || s.includes("locally resolved") ||
+      s.includes("no further action") || s.includes("unable to take further") ||
+      s.includes("anti-social behaviour")) return "nosuspect";
+  if (s.includes("unable to prosecute") || s.includes("evidential")) return "identified";
+  if (JUSTICE.some(k=>s.includes(k))) return "justice";
+  return "open";
+}
+const COLORS = {justice:"#51cf66", identified:"#ffd43b", nosuspect:"#ff6b6b", open:"#4fc3f7"};
+const NAMES  = {justice:"Faced justice", identified:"Suspect identified, no charge", nosuspect:"Closed — no suspect identified", open:"Still open / outcome pending"};
+const ORDER  = ["justice","identified","nosuspect","open"];
+
+let map, layer;
+
+async function boot(){
+  const st = document.getElementById('status');
+  let areas = [];
+  try{
+    const res = await fetch('data/areas.json?t=' + Date.now());
+    if(res.ok) areas = await res.json();
+  }catch(e){/* fall back to single legacy snapshot */}
+  if(!areas.length){
+    try{
+      const res = await fetch('data.json?t=' + Date.now());
+      if(res.ok) areas = [{label:'Orpington', file:'data.json'}];
+    }catch(e){}
+  }
+  if(!areas.length){ st.textContent = "No data snapshot found (data/areas.json). Run build_data.py first."; return; }
+  const sel = document.getElementById('area');
+  sel.innerHTML = areas.map(a=>`<option value="${a.file}" data-label="${a.label}">${a.label}</option>`).join('');
+  sel.addEventListener('change', ()=>loadSnapshot(sel.value));
+  await loadSnapshot(areas[0].file);
+}
+
+async function loadSnapshot(file){
+  const st = document.getElementById('status');
+  st.textContent = 'Loading ' + file + '…';
+  try{
+    const url = (file === 'data.json' ? 'data.json' : 'data/' + file) + '?t=' + Date.now();
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('missing');
+    SNAPSHOT = await res.json();
+    st.textContent = `Snapshot: ${SNAPSHOT.count} reports within ${SNAPSHOT.radius} km of ${SNAPSHOT.place}, ${SNAPSHOT.months.at(-1)} → ${SNAPSHOT.months[0]}`;
+    document.getElementById('gen').textContent = SNAPSHOT.generated.slice(0,10);
+    const present = new Set(SNAPSHOT.records.map(r=>r.cat));
+    for(const opt of [...document.getElementById('category').options])
+      if(!present.has(opt.value) && opt.value!=='all-crime') opt.hidden = true;
+    render();
+    for(const id of ['category','months','radius'])
+      document.getElementById(id).addEventListener('change', render);
+  }catch(e){
+    st.textContent = "Failed to load snapshot " + file;
+  }
+}
+
+function filtered(){
+  const cat = document.getElementById('category').value;
+  const nM  = +document.getElementById('months').value;
+  const rad = +document.getElementById('radius').value;
+  let months = SNAPSHOT.months;
+  if(nM) months = months.slice(0, nM);
+  const mset = new Set(months);
+  return SNAPSHOT.records.filter(r => mset.has(r.month) && r.d <= rad &&
+    (cat === 'all-crime' || r.cat === cat));
+}
+
+function render(){
+  if(!SNAPSHOT) return;
+  const cat = document.getElementById('category').value;
+  const recs = filtered();
+  document.getElementById('kpis').hidden = false;
+
+  const buckets={justice:0,identified:0,nosuspect:0,open:0};
+  for(const c of recs) buckets[classify(c.out)]++;
+  const closed = recs.length - buckets.open;
+  const identified = buckets.justice + buckets.identified;
+  const pct=(x,n)=> n ? (100*x/n).toFixed(1)+"%" : "–";
+  document.getElementById('k-total').textContent = recs.length;
+  document.getElementById('k-total-l').textContent = (cat==='all-crime'?'all-crime':'burglary-level:')==='burglary-level:burglary'||cat!=='all-crime' ? (cat==='all-crime'?'reports':'reports') : 'reports';
+  document.getElementById('k-total-l').textContent = recs.length===1?'report':'reports';
+  document.getElementById('k-nosuspect').textContent = pct(buckets.nosuspect, closed);
+  document.getElementById('k-ident').textContent = pct(identified, closed);
+  document.getElementById('k-solved').textContent = pct(buckets.justice, closed);
+
+  // donut
+  const svg=document.getElementById('donut'); svg.innerHTML="";
+  let acc=0;
+  svg.insertAdjacentHTML('beforeend','<circle cx=21 cy=21 r=15.9155 fill=none stroke="#1e2a3a" stroke-width=6></circle>');
+  for(const k of ORDER){ const frac=recs.length? buckets[k]/recs.length:0;
+    svg.insertAdjacentHTML('beforeend',
+      `<circle cx=21 cy=21 r=15.9155 fill=none stroke="${COLORS[k]}" stroke-width=6
+         stroke-dasharray="${(frac*100).toFixed(2)} ${(100-frac*100).toFixed(2)}" stroke-dashoffset="${(25-acc).toFixed(2)}"></circle>`);
+    acc += frac*100; }
+  document.getElementById('donutleg').innerHTML =
+    ORDER.map(k=>`<div><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${COLORS[k]};margin-right:6px"></span>${NAMES[k]}: <b>${buckets[k]}</b> (${pct(buckets[k],recs.length)})</div>`).join('');
+
+  // monthly bars (count + open share stacked feel: just count, coloured by solve rate)
+  const byM={};
+  for(const c of recs){ (byM[c.month] ||= {n:0, justice:0, closed:0}); byM[c.month].n++;
+    const b=classify(c.out); if(b!=='open'){byM[c.month].closed++; if(b==='justice')byM[c.month].justice++;} }
+  const mx=Math.max(...Object.values(byM).map(o=>o.n),1);
+  const mdiv=document.getElementById('monthly'); mdiv.innerHTML="";
+  const mkeys=Object.keys(byM).sort();
+  for(const m of mkeys){ const o=byM[m];
+    mdiv.insertAdjacentHTML('beforeend',
+      `<div class="mcol"><div class="mval">${o.n}</div>
+       <div class="mbar" style="height:${(o.n/mx*88).toFixed(1)}%;background:${o.closed&&o.justice/o.closed>0.1?'var(--warn)':'var(--accent)'}" title="${m}: ${o.n} reports"></div>
+       <div class="mlab">${m.slice(2)}</div></div>`); }
+
+  // solve rate by month table (closed cases)
+  document.getElementById('solveby').innerHTML =
+    "<table><tr><th>Month</th><th>Closed</th><th>Justice</th><th>Solve*</th></tr>" +
+    mkeys.slice().reverse().slice(0,12).map(m=>{const o=byM[m];
+      return `<tr><td>${m}</td><td>${o.closed}</td><td>${o.justice}</td><td><b>${pct(o.justice,o.closed)}</b></td></tr>`}).join('') +
+    "</table><div class='filter-note'>* faced-justice share of cases with a recorded outcome</div>";
+
+  // streets
+  const cnt={};
+  for(const c of recs){ const s=c.street||"unknown"; (cnt[s] ||= {n:0,d:99}); cnt[s].n++; cnt[s].d=Math.min(cnt[s].d,c.d); }
+  const top=Object.entries(cnt).sort((a,b)=>b[1].n-a[1].n).slice(0,14);
+  document.getElementById('streets').innerHTML =
+    "<tr><th>Street (anonymised)</th><th>Reports</th><th>Nearest</th></tr>" +
+    top.map(([s,o])=>`<tr><td>${s.replace(/^On or near /,'')}</td><td><b>${o.n}</b></td><td>${o.d.toFixed(1)} km</td></tr>`).join('');
+
+  // map: last 3 snapshot months
+  if(!map){
+    map=L.map('map',{scrollWheelZoom:true}).setView(SNAPSHOT.center, 12);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+      attribution:'© OpenStreetMap © CARTO · data © police.uk (OGL v3)', maxZoom:18}).addTo(map);
+    layer=L.featureGroup().addTo(map);
+    document.getElementById('maplegend').innerHTML = ORDER.map(k=>`<span><i style="background:${COLORS[k]}"></i>${NAMES[k]}</span>`).join('');
+  }
+  layer.clearLayers();
+  const last3 = SNAPSHOT.months.slice(0,3);
+  const rad = +document.getElementById('radius').value;
+  let n=0;
+  for(const c of recs.filter(x=>last3.includes(x.month) && x.d<=rad)){
+    n++;
+    L.circleMarker([c.lat,c.lng],{radius:7,color:COLORS[classify(c.out)],weight:1.5,fillOpacity:.45})
+      .bindPopup(`<b>${(c.street||'').replace(/^On or near /,'')}</b><br>${c.cat.replace(/-/g,' ')} · ${c.month} · ${c.d} km<br>${c.out ? 'Outcome: '+c.out : 'Outcome not yet recorded'}`)
+      .addTo(layer);
+  }
+  if(n) map.fitBounds(layer.getBounds().pad(0.15)); else map.setView(SNAPSHOT.center,12);
+  if(map._osmHint===undefined){ map._osmHint=true; }
+}
+
+boot();
+</script>
+</body>
+</html>
