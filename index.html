@@ -35,6 +35,8 @@ button:disabled{opacity:.5;cursor:wait}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
 .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
 #map{height:440px;border-radius:10px;overflow:hidden}
+/* dark basemap without API-keyed CARTO: OSM standard tiles + invert filter on tiles only */
+.leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(1.1) saturate(.7)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 td,th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
 th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
@@ -265,8 +267,8 @@ function render(){
   // map: last 3 snapshot months
   if(!map){
     map=L.map('map',{scrollWheelZoom:true}).setView(SNAPSHOT.center, 12);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-      attribution:'© OpenStreetMap © CARTO · data © police.uk (OGL v3)', maxZoom:18}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'© OpenStreetMap contributors · data © police.uk (OGL v3)', maxZoom:18}).addTo(map);
     layer=L.featureGroup().addTo(map);
     document.getElementById('maplegend').innerHTML = ORDER.map(k=>`<span><i style="background:${COLORS[k]}"></i>${NAMES[k]}</span>`).join('');
   }

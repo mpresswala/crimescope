@@ -3,3 +3,4 @@ build.log
 http.log
 refresh.log
 *.zip
+.secrets.env
