@@ -16,6 +16,7 @@ AREAS = [
     ("Beckenham", 51.4110,  0.0090, 5.0),
     ("Chislehurst", 51.4010, 0.0750, 4.0),
     ("Petts Wood", 51.3780, 0.0990, 3.5),
+    ("Chelsfield", 51.3540, 0.1170, 3.0),
 ]
 N_MONTHS = 13                     # months of history (2-month lag applied)
 CATEGORY = "all-crime"            # street-level endpoint includes every category
@@ -128,7 +129,14 @@ def main():
         manifest.append({"label": out["place"], "file": slug(out["place"]) + ".json",
                          "generated": out["generated"], "count": out["count"]})
         time.sleep(3)
-    with open(os.path.join(OUTDIR, "areas.json"), "w") as f:
+    # merge with existing manifest entries for areas not rebuilt this run
+    mpath = os.path.join(OUTDIR, "areas.json")
+    if len(areas) < len(AREAS) and os.path.exists(mpath):
+        existing = json.load(open(mpath))
+        done = {a["file"] for a in manifest}
+        manifest += [e for e in existing if e["file"] not in done]
+        manifest.sort(key=lambda a: a["label"])
+    with open(mpath, "w") as f:
         json.dump(manifest, f, indent=1)
     print("Wrote areas.json:", ", ".join(a["label"] for a in manifest), flush=True)
 
